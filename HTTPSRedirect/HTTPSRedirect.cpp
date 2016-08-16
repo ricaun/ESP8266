@@ -124,7 +124,16 @@ bool HTTPSRedirect::printRedir(const char* url, const char* host, const char* re
   
   fetchData(false, true);
 
-  fetchData(true, false);
+  response = "";
+  
+  if (connected()) {
+  	String line = readStringUntil('\n'); // available response in hex
+  	int i = strtol(&line[0],NULL,16); // hex to int
+	  while(i-- >= 0) {
+  		response += (char) read();
+	  }
+	  DPRINTLN(response); // response from google
+  }
 
   flush();
   //stop();
